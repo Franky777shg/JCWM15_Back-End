@@ -40,51 +40,19 @@ module.exports = {
     },
     register: (req, res) => {
         let errors = validationResult(req)
-        console.log(errors)
+        // console.log(errors)
+        // console.log(errors.array())
 
-        // {
-        //     "errors": [
-        //         {
-        //             "value": "",
-        //             "msg": "Username can't empty",
-        //             "param": "username",
-        //             "location": "body"
-        //         },
-        //         {
-        //             "value": "",
-        //             "msg": "Username must have 6 character",
-        //             "param": "username",
-        //             "location": "body"
-        //         },
-        //         {
-        //             "value": "frengky",
-        //             "msg": "Password must include number",
-        //             "param": "password",
-        //             "location": "body"
-        //         },
-        //         {
-        //             "value": "frengky",
-        //             "msg": "Password must include symbol",
-        //             "param": "password",
-        //             "location": "body"
-        //         },
-        //         {
-        //             "value": "frengkygmailcom",
-        //             "msg": "Invalid email",
-        //             "param": "email",
-        //             "location": "body"
-        //         }
-        //     ]
-        // }
+        // mengambil msg error dari express-validator
+        const msg = errors.array().map(
+            (item) => item.msg
+        )
+        console.log(msg)
 
-        const msg = errors.array().
+        if (!errors.isEmpty()) return res.status(400).send(msg)
 
-        if (!errors.isEmpty()) {
-            return res.status(400).send({ errors: errors.array() });
-        }
-
-        // database.push(req.body)
-        res.status(200).send('testing validator berhasil')
+        database.push(req.body)
+        res.status(200).send(database)
     },
     edit: (req, res) => {
         // ambil data user yang mau diedit
