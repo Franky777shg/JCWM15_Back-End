@@ -17,8 +17,9 @@ server.get('/home', (req, res) => {
 })
 
 // connect to all router
-const { userRouter } = require('./routers')
+const { userRouter, productRouter } = require('./routers')
 server.use('/user', userRouter)
+server.use('/product', productRouter)
 
 
 server.listen(port, () => console.log(`Connected to port: ${port}`))
