@@ -105,12 +105,3 @@ select sum(amount) as total_pembelian from payments;
 -- mencari total quantity pmebelian dari order details untuk orderNumber 10100
 select sum(quantityOrdered) as total_quantity_10100 from orderdetails
 where orderNumber = 10100;
-
-
-
-
-
-
-
-
-
