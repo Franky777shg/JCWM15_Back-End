@@ -93,15 +93,70 @@ FROM
 
 -- JOIN, INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN
 -- INNER JOIN, menggabung tabel dengan foregin key, data yang tidak cocok akan dibuang
-select * from employees;
-select * from offices;
+CREATE TABLE members (
+    member_id INT AUTO_INCREMENT,
+    name VARCHAR(100),
+    PRIMARY KEY (member_id)
+);
+
+CREATE TABLE committees (
+    committee_id INT AUTO_INCREMENT,
+    name VARCHAR(100),
+    PRIMARY KEY (committee_id)
+);
+
+INSERT INTO members(name)
+VALUES('John'),('Jane'),('Mary'),('David'),('Amelia');
+
+INSERT INTO committees(name)
+VALUES('John'),('Mary'),('Amelia'),('Joe');
+
+select * from members;
+select * from committees;
 
 -- INNER JOIN WITH ON, ketika nama kolom nya beda
-select e.employeeNumber, concat(e.firstName, ' ', e.lastName) as name, e.email, e.officeCode, o.city, o.phone from employees e
-INNER JOIN offices o
-on e.officeCode = o.officeCode;
+select * from members m
+INNER JOIN committees c
+on m.name = c.name;
 
--- INNER JOIN WITH USING, ketikam nama kolomnya sama
-select e.employeeNumber, concat(e.firstName, ' ', e.lastName) as name, e.email, e.officeCode, o.city, o.phone from employees e
-INNER JOIN offices o
-using(officeCode);
+-- INNER JOIN WITH USING, ketika nama kolomnya sama
+select * from members m
+INNER JOIN committees c
+using(name);
+
+-- LEFT JOIN, kalau ada data yang tidak cocok, dia tidak dibuang tapi datanya dinull kan, table utama sebelah kiri
+select * from members m
+LEFT JOIN committees c
+on m.name = c.name;
+
+-- RIGHT JOIN, kalau ada data yang tidak cocok, dia tidak dibuang tapi datanya dinull kan, table utama sebelah kanan
+select * from members m
+RIGHT JOIN committees c
+on m.name = c.name;
+
+-- CROSS JOIN, tidak membutuhkan condition, tiap item dari table sebelah kiri, akan dipasangkan dengan tiap item di table sebelah kanan
+select * from members m
+CROSS JOIN committees c;
+
+-- tampilkan data customers yang ada di negara USA yang mempunyai credit limit diatas rata2 credit limit customers di Germany
+select country, avg(creditLimit) as avg_crLimitGerm from customers where country = 'Germany';
+
+select customerNumber, customerName, country, creditLimit from customers
+where country = 'USA'
+order by customerName;
+
+select customerNumber, customerName, country, creditLimit from customers
+where country = 'USA' and creditLimit >= (
+	select avg(creditLimit) as avg_crLimitGerm from customers where country = 'Germany'
+)
+order by creditLimit;
+
+select cs.customerNumber, cs.customerName, cs.country, cs.creditLimit, em.employeeNumber, concat(em.lastname, ', ', em.firstName) as sales_name, em.email from customers cs
+join employees em
+on cs.salesRepEmployeeNumber = em.employeeNumber
+order by customerNumber;
+
+-- tampilkan data orderdetail, hitunglah total quantity dan total price per order number
+-- dengan ketentuan total price diatas rata2 semua total price per order number dan 
+-- total quantity diatas rata2 semua total quantity per order number
+select * from orderdetails;
