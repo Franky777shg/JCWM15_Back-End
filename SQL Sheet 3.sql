@@ -160,3 +160,53 @@ order by customerNumber;
 -- dengan ketentuan total price diatas rata2 semua total price per order number dan 
 -- total quantity diatas rata2 semua total quantity per order number
 select * from orderdetails;
+
+-- cari dahulu rata2 semua total quantity per order number
+select orderNumber, sum(quantityOrdered) total_qty from orderdetails
+group by orderNumber;
+
+select avg(total_qty) as avg_total_qty from (
+	select sum(quantityOrdered) total_qty from orderdetails
+	group by orderNumber
+) list_total_qty;
+
+-- cari dahulu rata2 semua total price per order number
+select orderNumber, sum(quantityOrdered * priceEach) total_price from orderdetails
+group by orderNumber;
+
+select avg(total_price) as avg_total_price from (
+	select orderNumber, sum(quantityOrdered * priceEach) total_price from orderdetails
+	group by orderNumber
+) list_total_price;
+
+-- avg_qty 323
+-- avg price 29460
+select orderNumber, sum(quantityOrdered) total_qty, sum(quantityOrdered * priceEach) total_price from orderdetails
+group by orderNumber
+having total_qty > (
+	select avg(total_qty) as avg_total_qty from (
+		select sum(quantityOrdered) total_qty from orderdetails
+		group by orderNumber
+	) list_total_qty
+) and total_price > (
+	select avg(total_price) as avg_total_price from (
+		select orderNumber, sum(quantityOrdered * priceEach) total_price from orderdetails
+		group by orderNumber
+	) list_total_price
+);
+
+select count(*) result from (
+	select orderNumber, sum(quantityOrdered) total_qty, sum(quantityOrdered * priceEach) total_price from orderdetails
+	group by orderNumber
+	having total_qty > (
+		select avg(total_qty) as avg_total_qty from (
+			select sum(quantityOrdered) total_qty from orderdetails
+			group by orderNumber
+		) list_total_qty
+	) and total_price > (
+		select avg(total_price) as avg_total_price from (
+			select orderNumber, sum(quantityOrdered * priceEach) total_price from orderdetails
+			group by orderNumber
+		) list_total_price
+	)
+) list_result;
