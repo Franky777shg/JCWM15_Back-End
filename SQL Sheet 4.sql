@@ -60,6 +60,10 @@ on c2.parent_id = c1.id
 where c2.id is null;
 
 -- QUERYING THE WHOLE TREE
+SELECT id, title, title as path							-- titik awal recursive
+FROM category											-- titik awal recursive
+WHERE parent_id IS NULL;
+    
 WITH RECURSIVE category_path (id, title, path) AS
 (
 	SELECT id, title, title as path							-- titik awal recursive
@@ -70,11 +74,15 @@ WITH RECURSIVE category_path (id, title, path) AS
   
 	SELECT c.id, c.title, CONCAT(cp.path, ' > ', c.title)	-- recursive query
 	FROM category_path AS cp JOIN category AS c				-- recursive query
-	ON cp.id = c.parent_id									-- recursive query
+	ON cp.id = c.parent_id									-- termination condition
 )
 SELECT * FROM category_path;								-- pemanggilan hasil recursive
 
 -- QUERYING A SUB TREE
+SELECT id, title, title as path
+FROM category
+WHERE parent_id = 7;
+
 WITH RECURSIVE category_path (id, title, path) AS
 (
   SELECT id, title, title as path
@@ -88,6 +96,10 @@ WITH RECURSIVE category_path (id, title, path) AS
 SELECT * FROM category_path;
 
 -- QUERYING A SINGLE PATH
+SELECT id, title, parent_id
+    FROM category
+    WHERE id = 10;
+    
 WITH RECURSIVE category_path (id, title, parent_id) AS
 (
   SELECT id, title, parent_id
@@ -98,4 +110,5 @@ WITH RECURSIVE category_path (id, title, parent_id) AS
     FROM category_path AS cp JOIN category AS c
       ON cp.parent_id = c.id
 )
-SELECT * FROM category_path;
+SELECT * FROM category_path
+order by id;
