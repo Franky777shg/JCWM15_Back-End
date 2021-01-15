@@ -18,9 +18,15 @@ module.exports = {
     },
     login: (req, res) => {
         const { username, password } = req.body
+
+        // hashing password
+        const hashpass = cryptojs.HmacMD5(password, SECRET_KEY)
+
         const loginQuery = `SELECT username, email FROM users 
                             WHERE username='${username}'
-                            AND password=${db.escape(password)}`
+                            AND password=${db.escape(hashpass.toString())}`
+        console.log(loginQuery)
+
         db.query(loginQuery, (err, result) => {
             if (err) return res.status(500).send(err)
 
@@ -32,6 +38,7 @@ module.exports = {
 
             res.status(200).send(result[0])
         })
+        // res.status(200).send('testing login')
     },
     register: (req, res) => {
         const { username, password, email} = req.body
