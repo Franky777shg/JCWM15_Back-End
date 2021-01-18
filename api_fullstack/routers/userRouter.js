@@ -30,6 +30,9 @@ const registerValidation = [
 router.get('/getAllUsers', userController.getAllUser)
 router.post('/login', userController.login)
 router.put('/register', registerValidation, userController.register)
+router.post('/edit/:id', userController.edit)
+router.post('/edit_password/:id', userController.editPass)
+router.delete('/delete/:id', userController.delete)
 
 // export router
 module.exports = router

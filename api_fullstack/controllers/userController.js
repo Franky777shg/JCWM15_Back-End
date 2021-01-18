@@ -1,7 +1,10 @@
 // import module yang dibutuhkan
-const { validationResult } = require('express-validator')
+const { validationResult, check } = require('express-validator')
 const cryptojs = require('crypto-js')
+
+// import helpers
 const SECRET_KEY = '!@#$%^&*'
+const { generateQuery } = require('../helpers/queryHelp')
 
 // import database connection
 const db = require('../database')
@@ -41,11 +44,11 @@ module.exports = {
         // res.status(200).send('testing login')
     },
     register: (req, res) => {
-        const { username, password, email} = req.body
+        const { username, password, email } = req.body
 
         // validation input from user
         const errors = validationResult(req)
-        if(!errors.isEmpty()) return res.status(400).send(errors.array()[0].msg)
+        if (!errors.isEmpty()) return res.status(400).send(errors.array()[0].msg)
 
         // encrypt password with crypto js
         // data yang sudah di encrypt oleh crypto js, TIDAK BISA di decrypt
@@ -57,19 +60,84 @@ module.exports = {
                           WHERE username=${db.escape(username)}
                           OR email=${db.escape(email)}`
         db.query(checkUser, (err, result) => {
-            if(err) return res.status(500).send(err)
+            if (err) return res.status(500).send(err)
 
             // cek apakah di database ada user dengan username atau email yang sama
-            if(result.length !== 0) return res.status(400).send('Username or Email is already exist')
+            if (result.length !== 0) return res.status(400).send('Username or Email is already exist')
 
             const regQuery = `INSERT INTO users (username, password, email)
                               VALUES (${db.escape(username)}, ${db.escape(hashpass.toString())}, ${db.escape(email)})`
             db.query(regQuery, (err2, result2) => {
-                if(err2) res.status(500).send(err2)
+                if (err2) res.status(500).send(err2)
 
                 res.status(200).send(result2)
             })
         })
         // res.status(200).send('test hash password')
+    },
+    edit: (req, res) => {
+        const id = parseInt(req.params.id)
+
+        const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(id)}`
+        // console.log(checkUser)
+
+        db.query(checkUser, (err, result) => {
+            if (err) return res.status(500).send(err)
+
+            // if id_users not found
+            if (result.length === 0) return res.status(200).send(`User with id : ${id} is not found`)
+
+            const editUser = `UPDATE users SET${generateQuery(req.body)} WHERE id_users=${id}`
+            // console.log(editUser)
+            db.query(editUser, (err2, result2) => {
+                if (err2) return res.status(500).send(err2)
+
+                res.status(200).send(result2)
+            })
+        })
+    },
+    editPass: (req, res) => {
+        const id = parseInt(req.params.id)
+
+        const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(id)}`
+        // console.log(checkUser)
+
+        db.query(checkUser, (err, result) => {
+            if (err) return res.status(500).send(err)
+
+            // if id_users not found
+            if (result.length === 0) return res.status(200).send(`User with id : ${id} is not found`)
+
+            const hashpass = cryptojs.HmacMD5(req.body.password, SECRET_KEY)
+
+            // query change password
+            const editPassword = `UPDATE users SET password=${db.escape(hashpass.toString())} WHERE id_users=${id}`
+            // console.log(editPassword)
+
+            db.query(editPassword, (err2, result2) => {
+                if (err2) return res.status(500).send(err2)
+
+                res.status(200).send(result2)
+            })
+        })
+    },
+    delete: (req, res) => {
+        const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(parseInt(req.params.id))}`
+
+        db.query(checkUser, (err, result) => {
+            if (err) return res.status(500).send(err)
+
+            // if id_users not found
+            if (result.length === 0) return res.status(200).send(`User with id : ${parseInt(req.params.id)} is not found`)
+
+            const deleteUser = `DELETE FROM users WHERE id_users=${parseInt(req.params.id)}`
+
+            db.query(deleteUser, (err2, result2) => {
+                if (err2) return res.status(500).send(err2)
+
+                res.status(200).send(result2)
+            })
+
+        })
     }
 }
