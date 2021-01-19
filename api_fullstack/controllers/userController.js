@@ -25,7 +25,7 @@ module.exports = {
         // hashing password
         const hashpass = cryptojs.HmacMD5(password, SECRET_KEY)
 
-        const loginQuery = `SELECT username, email FROM users 
+        const loginQuery = `SELECT id_users, username, email FROM users 
                             WHERE username='${username}'
                             AND password=${db.escape(hashpass.toString())}`
         console.log(loginQuery)

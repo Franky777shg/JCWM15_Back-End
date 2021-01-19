@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import {
     Navbar,
     Nav,
-    NavDropdown
+    Dropdown
 } from 'react-bootstrap'
 
 class Navigation extends React.Component {
@@ -17,14 +17,19 @@ class Navigation extends React.Component {
                     <Nav className="mr-auto">
                         <Nav.Link as={Link} to='/'>Home</Nav.Link>
                         <Nav.Link as={Link} to='/product'>Product</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown>
                     </Nav>
+                    <Dropdown style={{ margin: '0 40px' }}>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            username
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item as={Link} to='/login'>Login</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/register'>Register</Dropdown.Item>
+                            <Dropdown.Item href="#action/3.3">Something</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item href="#action/3.4">Separated link</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Navbar.Collapse>
             </Navbar>
         )
