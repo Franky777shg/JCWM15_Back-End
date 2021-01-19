@@ -1,5 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
+import Axios from 'axios'
 
 // import component
 import Navigation from './components/navigation'
@@ -11,6 +12,11 @@ import Login from './pages/login'
 import Register from './pages/register'
 
 class App extends React.Component {
+
+    // componentDidMount() {
+    //     Axios.post('http://localhost:2000/user/login', {username, password})
+    // }
+    
     render() {
         return (
             <div>

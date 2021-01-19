@@ -9,7 +9,7 @@ import {
 
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-// import { login } from '../actions'
+import { login } from '../actions'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -35,8 +35,8 @@ class LoginPage extends React.Component {
                 // check error
                 // if(typeof(res.data) === "string") return 
 
-                localStorage.id = res.data.id_users;
-                // this.props.login(res.data[0])
+                localStorage.token = res.data.id_users;
+                this.props.login(res.data)
                 this.setState({ loginError: [false, ""], toHome: true });
             })
             .catch((err) => {
@@ -46,9 +46,7 @@ class LoginPage extends React.Component {
     };
 
     render() {
-        // console.log(this)
-        if (this.state.toHome) return <Redirect to="/" />
-        // object destructuring untuk local state
+        if (this.props.username) return <Redirect to="/" />
         const { loginError, visible } = this.state
 
         return (
@@ -140,11 +138,10 @@ const styles = {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         username: state.user.username
-//     }
-// }
+const mapStateToProps = (state) => {
+    return {
+        username: state.user.username
+    }
+}
 
-// export default connect(mapStateToProps, { login })(LoginPage)
-export default LoginPage
+export default connect(mapStateToProps, { login })(LoginPage)

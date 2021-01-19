@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import {
     Navbar,
@@ -20,7 +21,7 @@ class Navigation extends React.Component {
                     </Nav>
                     <Dropdown style={{ margin: '0 40px' }}>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            username
+                            {this.props.username || 'username'}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item as={Link} to='/login'>Login</Dropdown.Item>
@@ -36,4 +37,10 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation
+const mapStateToProps = (state) => {
+    return {
+        username: state.user.username
+    }
+}
+
+export default connect(mapStateToProps) (Navigation)
