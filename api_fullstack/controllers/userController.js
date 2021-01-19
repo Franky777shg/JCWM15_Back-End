@@ -78,6 +78,19 @@ module.exports = {
     edit: (req, res) => {
         const id = parseInt(req.params.id)
 
+        // validation input from user
+        const errors = validationResult(req)
+        console.log(errors.errors)
+        
+        const errUsername = errors.errors.filter(item => item.param === 'username' && item.value !== undefined)
+        console.log(errUsername)
+        if (errUsername.length !== 0) return res.status(400).send(errUsername[0].msg)
+        
+        const errEmail = errors.errors.filter(item => item.param === 'email' && item.value !== undefined)
+        console.log(errEmail)
+        if (errEmail.length !== 0) return res.status(400).send(errEmail[0].msg)
+        
+
         const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(id)}`
         // console.log(checkUser)
 
@@ -98,6 +111,10 @@ module.exports = {
     },
     editPass: (req, res) => {
         const id = parseInt(req.params.id)
+
+        // validation input from user
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) return res.status(400).send(errors.array()[0].msg)
 
         const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(id)}`
         // console.log(checkUser)
