@@ -1,6 +1,7 @@
 const mysql = require('mysql')
 
 // set up my sql
+// data my sql sudah pakai dotenv
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
