@@ -28,21 +28,28 @@ class LoginPage extends React.Component {
         console.log(username, password);
         if (!username || !password) return this.setState({ loginError: [true, "Please Input All Form"] })
 
-        Axios.post('http://localhost:2000/user/login', { username, password })
-            .then((res) => {
-                console.log(res.data);
+        const body = {
+            username,
+            password
+        }
+        this.props.login(body)
+        this.setState({ loginError: [false, ""], toHome: true })
 
-                // check error
-                // if(typeof(res.data) === "string") return 
+        // Axios.post('http://localhost:2000/user/login', { username, password })
+        //     .then((res) => {
+        //         console.log(res.data);
 
-                localStorage.token = res.data.id_users;
-                this.props.login(res.data)
-                this.setState({ loginError: [false, ""], toHome: true });
-            })
-            .catch((err) => {
-                console.log(err.response)
-                this.setState({ loginError: [true, err.response.data] })
-            });
+        //         // check error
+        //         // if(typeof(res.data) === "string") return 
+
+        //         localStorage.token = res.data.id_users;
+        //         this.props.login(res.data)
+        //         this.setState({ loginError: [false, ""], toHome: true });
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.response)
+        //         this.setState({ loginError: [true, err.response.data] })
+        //     });
     };
 
     render() {

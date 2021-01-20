@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Axios from 'axios'
+import { connect } from 'react-redux'
 
 // import component
 import Navigation from './components/navigation'
@@ -11,12 +11,14 @@ import Product from './pages/product'
 import Login from './pages/login'
 import Register from './pages/register'
 
-class App extends React.Component {
+// import actions
+import { keepLogin } from './actions'
 
-    // componentDidMount() {
-    //     Axios.post('http://localhost:2000/user/login', {username, password})
-    // }
-    
+class App extends React.Component {
+    componentDidMount() {
+        this.props.keepLogin()
+    }
+
     render() {
         return (
             <div>
@@ -32,4 +34,4 @@ class App extends React.Component {
     }
 }
 
-export default App
+export default connect(null, { keepLogin })(App)

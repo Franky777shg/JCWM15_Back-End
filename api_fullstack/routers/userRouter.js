@@ -5,6 +5,9 @@ const { body } = require('express-validator')
 // import controller
 const { userController } = require('../controllers')
 
+// import helpers
+const { verifyToken } = require('../helpers/jwt')
+
 // register validation
 const registerValidation = [
     body('username')
@@ -54,6 +57,7 @@ router.put('/register', registerValidation, userController.register)
 router.post('/edit/:id', editValidation, userController.edit)
 router.post('/edit_password/:id', editPassValidation, userController.editPass)
 router.delete('/delete/:id', userController.delete)
+router.post('/keepLogin', verifyToken, userController.keepLogin)
 
 // export router
 module.exports = router

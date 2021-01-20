@@ -4,7 +4,8 @@ const cryptojs = require('crypto-js')
 
 // import helpers
 const SECRET_KEY = '!@#$%^&*'
-const { generateQuery } = require('../helpers/queryHelp')
+const { generateQuery, asyncQuery } = require('../helpers/queryHelp')
+const { createToken } = require('../helpers/jwt')
 
 // import database connection
 const db = require('../database')
@@ -28,7 +29,7 @@ module.exports = {
         const loginQuery = `SELECT id_users, username, email FROM users 
                             WHERE username='${username}'
                             AND password=${db.escape(hashpass.toString())}`
-        console.log(loginQuery)
+        // console.log(loginQuery)
 
         db.query(loginQuery, (err, result) => {
             if (err) return res.status(500).send(err)
@@ -38,6 +39,16 @@ module.exports = {
 
             // cek apakah login berhasil
             if (result.length === 0) return res.status(400).send('Username or Password is wrong')
+
+            // create token
+            let token = createToken({ id: result[0].id_users, username: result[0].username })
+
+            // console.log(result[0])
+            
+            // input token to result
+            result[0].token = token
+            
+            // console.log(result[0])
 
             res.status(200).send(result[0])
         })
@@ -81,15 +92,15 @@ module.exports = {
         // validation input from user
         const errors = validationResult(req)
         console.log(errors.errors)
-        
+
         const errUsername = errors.errors.filter(item => item.param === 'username' && item.value !== undefined)
         console.log(errUsername)
         if (errUsername.length !== 0) return res.status(400).send(errUsername[0].msg)
-        
+
         const errEmail = errors.errors.filter(item => item.param === 'email' && item.value !== undefined)
         console.log(errEmail)
         if (errEmail.length !== 0) return res.status(400).send(errEmail[0].msg)
-        
+
 
         const checkUser = `SELECT * FROM users WHERE id_users=${db.escape(id)}`
         // console.log(checkUser)
@@ -156,5 +167,23 @@ module.exports = {
             })
 
         })
+    },
+    keepLogin: async(req, res) => {
+        console.log(req.user)
+
+        try {
+            // query to get data from database
+            const getUser = `SELECT id_users, username, email FROM users
+                             WHERE id_users=${req.user.id}`
+            
+            const result = await asyncQuery(getUser)
+            console.log('result dari query', result[0])
+
+            res.status(200).send(result[0])
+        }
+        catch(err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
     }
 }

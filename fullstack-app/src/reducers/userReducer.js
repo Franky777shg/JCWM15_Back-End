@@ -2,7 +2,8 @@ let INITIAL_STATE = {
     id_users: null,
     username: '',
     password: '',
-    email: ''
+    email: '',
+    
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {
