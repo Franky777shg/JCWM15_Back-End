@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const TOKEN_KEY = '!@#$%^&*'
+const TOKEN_KEY = process.env.TOKEN_KEY
 
 module.exports = {
     createToken: (data) => {
@@ -14,7 +14,7 @@ module.exports = {
         try {
             // verify token
             const result = jwt.verify(token, TOKEN_KEY)
-            console.log('result dari verify: ', result)
+            // console.log('result dari verify: ', result)
 
             // add token to req.user
             req.user = result

@@ -3,7 +3,7 @@ const { validationResult, check } = require('express-validator')
 const cryptojs = require('crypto-js')
 
 // import helpers
-const SECRET_KEY = '!@#$%^&*'
+const SECRET_KEY = process.env.CRYPTO_KEY
 const { generateQuery, asyncQuery } = require('../helpers/queryHelp')
 const { createToken } = require('../helpers/jwt')
 
@@ -177,7 +177,7 @@ module.exports = {
                              WHERE id_users=${req.user.id}`
             
             const result = await asyncQuery(getUser)
-            console.log('result dari query', result[0])
+            // console.log('result dari query', result[0])
 
             res.status(200).send(result[0])
         }

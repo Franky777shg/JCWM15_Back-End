@@ -34,22 +34,6 @@ class LoginPage extends React.Component {
         }
         this.props.login(body)
         this.setState({ loginError: [false, ""], toHome: true })
-
-        // Axios.post('http://localhost:2000/user/login', { username, password })
-        //     .then((res) => {
-        //         console.log(res.data);
-
-        //         // check error
-        //         // if(typeof(res.data) === "string") return 
-
-        //         localStorage.token = res.data.id_users;
-        //         this.props.login(res.data)
-        //         this.setState({ loginError: [false, ""], toHome: true });
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response)
-        //         this.setState({ loginError: [true, err.response.data] })
-        //     });
     };
 
     render() {

@@ -4,7 +4,7 @@ export const login = (data) => {
     return async (dispatch) => {
         try {
             const res = await Axios.post('http://localhost:2000/user/login', data)
-            console.log(res.data)
+            // console.log(res.data)
 
             localStorage.id = res.data.id_users
             localStorage.token = res.data.token
@@ -18,28 +18,38 @@ export const login = (data) => {
 }
 
 export const logout = () => {
-    return {
-        type: 'LOG_OUT'
+    return async (dispatch) => {
+        try {
+            localStorage.removeItem('id')
+            localStorage.removeItem('token')
+            dispatch({ type: 'LOG_OUT' })
+        }
+        catch (err) {
+            console.log(err)
+        }
+
     }
 }
 
 export const keepLogin = () => {
     return async (dispatch) => {
         try {
-            console.log('keep login')
+            // console.log('keep login')
             // get token from local storage
             const token = localStorage.getItem('token')
-            console.log(token)
+            // console.log(token)
 
             // get user data from token
             const res = await Axios.post('http://localhost:2000/user/keepLogin', { token })
-            console.log('hasil dari api', res.data)
+            // console.log('hasil dari api', res.data)
 
             dispatch({ type: 'LOG_IN', payload: res.data })
         }
         catch (err) {
             console.log(err)
-            dispatch({ type: 'LOG_OUT'})
+            localStorage.removeItem('id')
+            localStorage.removeItem('token')
+            dispatch({ type: 'LOG_OUT' })
         }
     }
 }

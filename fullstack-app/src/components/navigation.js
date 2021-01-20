@@ -8,6 +8,8 @@ import {
     Dropdown
 } from 'react-bootstrap'
 
+import { logout } from '../actions'
+
 class Navigation extends React.Component {
     render() {
         return (
@@ -24,11 +26,15 @@ class Navigation extends React.Component {
                             {this.props.username || 'username'}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to='/login'>Login</Dropdown.Item>
-                            <Dropdown.Item as={Link} to='/register'>Register</Dropdown.Item>
-                            <Dropdown.Item href="#action/3.3">Something</Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item href="#action/3.4">Separated link</Dropdown.Item>
+                            {this.props.username
+                                ?
+                                <Dropdown.Item onClick={this.props.logout}>Logout</Dropdown.Item>
+                                :
+                                <>
+                                    <Dropdown.Item as={Link} to='/login'>Login</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to='/register'>Register</Dropdown.Item>
+                                </>
+                            }
                         </Dropdown.Menu>
                     </Dropdown>
                 </Navbar.Collapse>
@@ -43,4 +49,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps) (Navigation)
+export default connect(mapStateToProps, { logout })(Navigation)
