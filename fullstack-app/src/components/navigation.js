@@ -29,7 +29,7 @@ class Navigation extends React.Component {
                             {this.props.username
                                 ?
                                 <>
-                                    <Dropdown.Item onClick={this.props.logout}>Logout</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to='/' onClick={this.props.logout}>Logout</Dropdown.Item>
                                     <Dropdown.Item as={Link} to='/verification'>Verification</Dropdown.Item>
                                 </>
                                 :

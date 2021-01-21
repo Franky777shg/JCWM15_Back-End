@@ -9,7 +9,7 @@ import {
 
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { login } from '../actions'
+import { login, logout } from '../actions'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -82,17 +82,17 @@ class LoginPage extends React.Component {
                         <p>Do you have an account? <Link to='/register'>Register Here</Link> </p>
                     </div>
                 </div>
-                <Modal show={loginError[0]} onHide={() => this.setState({ loginError: [false, ""] })}>
+                <Modal show={Boolean(this.props.msgError)} onHide={this.props.logout}>
                     <Modal.Header closeButton>
                         <Modal.Title>Error</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <p>{loginError[1]}</p>
+                        <p>{this.props.msgError}</p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="primary" onClick={() => this.setState({ loginError: [false, ""] })}>
+                        <Button variant="primary" onClick={this.props.logout}>
                             Okay
                         </Button>
                     </Modal.Footer>
@@ -131,8 +131,9 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return {
-        username: state.user.username
+        username: state.user.username,
+        msgError: state.user.errLogin
     }
 }
 
-export default connect(mapStateToProps, { login })(LoginPage)
+export default connect(mapStateToProps, { login, logout })(LoginPage)

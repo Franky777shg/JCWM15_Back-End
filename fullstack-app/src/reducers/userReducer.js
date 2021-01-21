@@ -3,7 +3,8 @@ let INITIAL_STATE = {
     username: '',
     password: '',
     email: '',
-    regStatus: null
+    regStatus: null,
+    errLogin: ''
     
 }
 
@@ -24,6 +25,11 @@ export const userReducer = (state = INITIAL_STATE, action) => {
             return{
                 ...state,
                 regStatus: 1
+            }
+        case 'LOGIN_ERR':
+            return {
+                ...state,
+                errLogin: action.payload
             }
         default:
             return state

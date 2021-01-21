@@ -12,6 +12,7 @@ export const login = (data) => {
             dispatch({ type: 'LOG_IN', payload: res.data })
         }
         catch (err) {
+            dispatch({ type: 'LOGIN_ERR', payload: err.response.data})
             console.log(err ? `ERROR : ${err.response.data}` : err)
         }
     }
