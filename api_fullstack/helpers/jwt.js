@@ -7,6 +7,7 @@ module.exports = {
     },
     verifyToken: (req, res, next) => {
         const token = req.body.token
+        console.log('token : ', token)
 
         //check if token exist
         if(!token) return res.status(400).send('no token')
@@ -14,7 +15,7 @@ module.exports = {
         try {
             // verify token
             const result = jwt.verify(token, TOKEN_KEY)
-            // console.log('result dari verify: ', result)
+            console.log('result dari verify: ', result)
 
             // add token to req.user
             req.user = result

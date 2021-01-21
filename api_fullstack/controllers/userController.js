@@ -3,12 +3,15 @@ const { validationResult, check } = require('express-validator')
 const cryptojs = require('crypto-js')
 
 // import helpers
-const SECRET_KEY = process.env.CRYPTO_KEY
 const { generateQuery, asyncQuery } = require('../helpers/queryHelp')
 const { createToken } = require('../helpers/jwt')
+const transporter = require('../helpers/nodemailer')
 
 // import database connection
 const db = require('../database')
+
+// import dotenv
+const SECRET_KEY = process.env.CRYPTO_KEY
 
 // export controller
 module.exports = {
@@ -44,17 +47,17 @@ module.exports = {
             let token = createToken({ id: result[0].id_users, username: result[0].username })
 
             // console.log(result[0])
-            
+
             // input token to result
             result[0].token = token
-            
+
             // console.log(result[0])
 
             res.status(200).send(result[0])
         })
         // res.status(200).send('testing login')
     },
-    register: (req, res) => {
+    register: async (req, res) => {
         const { username, password, email } = req.body
 
         // validation input from user
@@ -66,25 +69,44 @@ module.exports = {
         const hashpass = cryptojs.HmacMD5(password, SECRET_KEY)
         console.log('password : ', hashpass.toString())
 
-        // kalau tidak ada error, proses penambahan data user baru berjalan
-        const checkUser = `SELECT * FROM users 
-                          WHERE username=${db.escape(username)}
-                          OR email=${db.escape(email)}`
-        db.query(checkUser, (err, result) => {
-            if (err) return res.status(500).send(err)
+        try {
+            // kalau tidak ada error, proses penambahan data user baru berjalan
+            const checkUser = `SELECT * FROM users 
+                              WHERE username=${db.escape(username)}
+                              OR email=${db.escape(email)}`
+            const resCheck = await asyncQuery(checkUser)
 
-            // cek apakah di database ada user dengan username atau email yang sama
-            if (result.length !== 0) return res.status(400).send('Username or Email is already exist')
+            if (resCheck.length !== 0) return res.status(400).send('Username or Email is already exist')
 
             const regQuery = `INSERT INTO users (username, password, email)
                               VALUES (${db.escape(username)}, ${db.escape(hashpass.toString())}, ${db.escape(email)})`
-            db.query(regQuery, (err2, result2) => {
-                if (err2) res.status(500).send(err2)
+            const resRegister = await asyncQuery(regQuery)
 
-                res.status(200).send(result2)
-            })
-        })
-        // res.status(200).send('test hash password')
+            // create token
+            const token = createToken({ id: resRegister.insertId, username: username })
+
+            // send email notification to user
+            const option = {
+                from: `admin <frengky.sihombing.777@gmail.com>`,
+                to: 'emailbuatsampah777@gmail.com',
+                subject: 'EMAIL VERIFICATION',
+                text: 'Click link below to verify your account',
+                html: `<h3>
+                        <a href="http://localhost:3000/verification?${token}">
+                            http://localhost:3000/verification?${token}
+                        </a>
+                       </h3>`
+            }
+
+            // send email
+            const info = await transporter.sendMail(option)
+
+            res.status(200).send(info.response)
+        }
+        catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
     },
     edit: (req, res) => {
         const id = parseInt(req.params.id)
@@ -168,18 +190,37 @@ module.exports = {
 
         })
     },
-    keepLogin: async(req, res) => {
+    keepLogin: async (req, res) => {
         console.log(req.user)
+        console.log('keep login')
 
         try {
             // query to get data from database
             const getUser = `SELECT id_users, username, email FROM users
                              WHERE id_users=${req.user.id}`
-            
+
             const result = await asyncQuery(getUser)
             // console.log('result dari query', result[0])
 
             res.status(200).send(result[0])
+        }
+        catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
+    },
+    emailVerification: async (req, res) => {
+        console.log('req user : ', req.user)
+
+        try {
+            // query to update status to verified
+            const verify = `UPDATE users SET status = 1 
+                            WHERE id_users = ${req.user.id} AND username = ${db.escape(req.user.username)}`
+            console.log(verify)
+            const result = await asyncQuery(verify)
+            console.log(result)
+
+            res.status(200).send('Email has been verified')
         }
         catch(err) {
             console.log(err)

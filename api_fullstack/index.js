@@ -2,7 +2,6 @@
 const express = require('express') // pembuat server pengganti http module
 const bodyParser = require('body-parser') // untuk menampung req.body
 const cors = require('cors') // izin sharing data
-const mysql = require('mysql') // untuk menyambungkan api dengan mysql database
 require('dotenv').config()
 
 // create app

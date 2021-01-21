@@ -58,6 +58,7 @@ router.post('/edit/:id', editValidation, userController.edit)
 router.post('/edit_password/:id', editPassValidation, userController.editPass)
 router.delete('/delete/:id', userController.delete)
 router.post('/keepLogin', verifyToken, userController.keepLogin)
+router.post('/verification', verifyToken, userController.emailVerification)
 
 // export router
 module.exports = router

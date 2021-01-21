@@ -10,6 +10,7 @@ import Home from './pages/home'
 import Product from './pages/product'
 import Login from './pages/login'
 import Register from './pages/register'
+import Verify from './pages/verification'
 
 // import actions
 import { keepLogin } from './actions'
@@ -28,6 +29,7 @@ class App extends React.Component {
                     <Route path='/product' component={Product} />
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
+                    <Route path='/verification' component={Verify} />
                 </Switch>
             </div>
         )
