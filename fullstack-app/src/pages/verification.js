@@ -1,9 +1,12 @@
 import React from 'react'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import {
     Button
 } from 'react-bootstrap'
+
+import { verification } from '../actions'
 
 class Verification extends React.Component {
     constructor(props) {
@@ -21,8 +24,8 @@ class Verification extends React.Component {
         try {
             const res = await Axios.post('http://localhost:2000/user/verification', { token })
             console.log('hasil verification', res.data)
-
-            this.setState({ verified: true })
+            
+            this.props.verification()
         }
         catch (err) {
             console.log(err)
@@ -30,9 +33,10 @@ class Verification extends React.Component {
     }
 
     render() {
+        console.log(this.props.status)
         return (
             <div>
-                {this.state.verified
+                {this.props.status === 1
                     ?
                     <>
                         <h3>Your Account has been verified</h3>
@@ -48,4 +52,10 @@ class Verification extends React.Component {
     }
 }
 
-export default Verification;
+const mapStateToProps = (state) => {
+    return {
+        status: state.user.regStatus
+    }
+}
+
+export default connect(mapStateToProps, { verification })(Verification);

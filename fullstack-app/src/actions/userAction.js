@@ -53,3 +53,9 @@ export const keepLogin = () => {
         }
     }
 }
+
+export const verification = () => {
+    return {
+        type: 'VERIFICATION'
+    }
+}
