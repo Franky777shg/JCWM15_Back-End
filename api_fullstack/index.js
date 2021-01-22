@@ -28,9 +28,9 @@ app.get('/', (req, res) => {
 })
 
 // import router
-const { productRouter, userRouter } = require('./routers')
+const { productRouter, userRouter, profileRouter } = require('./routers')
 app.use('/product', productRouter)
 app.use('/user', userRouter)
-
+app.use('/profile', profileRouter)
 const PORT = 2000
 app.listen(PORT, () => console.log(`Connected to PORT: ${PORT}`))

@@ -84,6 +84,9 @@ module.exports = {
                               VALUES (${db.escape(username)}, ${db.escape(hashpass.toString())}, ${db.escape(email)})`
             const resRegister = await asyncQuery(regQuery)
 
+            const profileQuery = `INSERT INTO profile (id_users) values (${resRegister.insertId})`
+            const resProfile = await asyncQuery(profileQuery) 
+
             // create token
             const token = createToken({ id: resRegister.insertId, username: username })
 
