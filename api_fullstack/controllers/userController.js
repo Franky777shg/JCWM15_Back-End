@@ -1,6 +1,8 @@
 // import module yang dibutuhkan
 const { validationResult, check } = require('express-validator')
 const cryptojs = require('crypto-js')
+const handlebars = require('handlebars')
+const fs = require('fs')
 
 // import helpers
 const { generateQuery, asyncQuery } = require('../helpers/queryHelp')
@@ -67,7 +69,7 @@ module.exports = {
         // encrypt password with crypto js
         // data yang sudah di encrypt oleh crypto js, TIDAK BISA di decrypt
         const hashpass = cryptojs.HmacMD5(password, SECRET_KEY)
-        console.log('password : ', hashpass.toString())
+        // console.log('password : ', hashpass.toString())
 
         try {
             // kalau tidak ada error, proses penambahan data user baru berjalan
@@ -90,13 +92,18 @@ module.exports = {
                 from: `admin <frengky.sihombing.777@gmail.com>`,
                 to: 'emailbuatsampah777@gmail.com',
                 subject: 'EMAIL VERIFICATION',
-                text: 'Click link below to verify your account',
-                html: `<h3>
-                        <a href="http://localhost:3000/verification?${token}">
-                            http://localhost:3000/verification?${token}
-                        </a>
-                       </h3>`
+                text: '',
             }
+
+            //set up handlebars
+            const emailFile = fs.readFileSync('./email/index.html').toString()
+            // console.log(email)
+
+            // compile data email
+            const template = handlebars.compile(emailFile)
+
+            // menambah properti html di dalam option 
+            option.html = template({ token: token, name: username})
 
             // send email
             const info = await transporter.sendMail(option)

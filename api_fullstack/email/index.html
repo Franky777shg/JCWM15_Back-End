@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .center {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: rgb(71, 52, 179);
+        }
+    </style>
+</head>
+
+<body>
+    <img src="https://static-ph.zacdn.com/cms/DY/Men_201903_ShoesSneakers_CarouselBanner1.jpg" alt="logo" height="150"
+        width="400" class="center">
+    <h1>SHOES - APP</h1>
+    <h2>Email Verification</h2>
+    <hr>
+    <hr>
+    <h3>Hello {{name}}!</h3>
+    <h3>Click link below to verify your account: </h3>
+    <h3>
+        <a href="http://localhost:3000/verification?{{token}}">
+            http://localhost:3000/verification?{{token}}
+        </a>
+    </h3>
+</body>
+
+</html>
