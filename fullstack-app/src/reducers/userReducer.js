@@ -3,9 +3,13 @@ let INITIAL_STATE = {
     username: '',
     password: '',
     email: '',
+    gender: '',
+    kota: '',
+    umur: null,
+    profile_pic: '',
     regStatus: null,
     errLogin: ''
-    
+
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,12 +21,16 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 username: action.payload.username,
                 password: action.payload.password,
                 email: action.payload.email,
-                regStatus: action.payload.status
+                regStatus: action.payload.status,
+                gender: action.payload.gender,
+                kota: action.payload.kota,
+                umur: action.payload.umur,
+                profile_pic: action.payload.profile_pic,
             }
         case 'LOG_OUT':
             return INITIAL_STATE
         case 'VERIFICATION':
-            return{
+            return {
                 ...state,
                 regStatus: 1
             }

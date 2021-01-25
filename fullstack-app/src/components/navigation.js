@@ -31,6 +31,7 @@ class Navigation extends React.Component {
                                 <>
                                     <Dropdown.Item as={Link} to='/' onClick={this.props.logout}>Logout</Dropdown.Item>
                                     <Dropdown.Item as={Link} to='/verification'>Verification</Dropdown.Item>
+                                    <Dropdown.Item as={Link} to='/profile'>Profile</Dropdown.Item>
                                 </>
                                 :
                                 <>

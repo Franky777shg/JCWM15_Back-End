@@ -31,7 +31,9 @@ module.exports = {
         // hashing password
         const hashpass = cryptojs.HmacMD5(password, SECRET_KEY)
 
-        const loginQuery = `SELECT id_users, username, email, status FROM users 
+        const loginQuery = `SELECT * FROM users
+                            LEFT JOIN profile
+                            USING(id_users)
                             WHERE username='${username}'
                             AND password=${db.escape(hashpass.toString())}`
         // console.log(loginQuery)
@@ -85,7 +87,7 @@ module.exports = {
             const resRegister = await asyncQuery(regQuery)
 
             const profileQuery = `INSERT INTO profile (id_users) values (${resRegister.insertId})`
-            const resProfile = await asyncQuery(profileQuery) 
+            const resProfile = await asyncQuery(profileQuery)
 
             // create token
             const token = createToken({ id: resRegister.insertId, username: username })
@@ -106,7 +108,7 @@ module.exports = {
             const template = handlebars.compile(emailFile)
 
             // menambah properti html di dalam option 
-            option.html = template({ token: token, name: username})
+            option.html = template({ token: token, name: username })
 
             // send email
             const info = await transporter.sendMail(option)
@@ -206,8 +208,10 @@ module.exports = {
 
         try {
             // query to get data from database
-            const getUser = `SELECT id_users, username, email, status FROM users
-                             WHERE id_users=${req.user.id}`
+            const getUser = `SELECT * FROM users
+            LEFT JOIN profile
+            USING(id_users)
+            WHERE username='${req.user.username}'`
 
             const result = await asyncQuery(getUser)
             // console.log('result dari query', result[0])
@@ -232,7 +236,7 @@ module.exports = {
 
             res.status(200).send('Email has been verified')
         }
-        catch(err) {
+        catch (err) {
             console.log(err)
             res.status(400).send(err)
         }

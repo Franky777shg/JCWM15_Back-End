@@ -21,12 +21,12 @@
 
 // console.log(editUser)
 
-// const jwt = require('jsonwebtoken')
-// let token = jwt.sign({username: 'frengky', password: 'frengky123!'}, '!@#$%^&*')
-// console.log('token : ', token)
+const jwt = require('jsonwebtoken')
+let token = jwt.sign({username: 'frengky', password: 'frengky123!'}, '!@#$%^&*')
+console.log('token : ', token)
 
-// let dataToken = jwt.verify(token, '!@#$%^&*')
-// console.log('token yang sudah di kembalikan menjadi bentuk semula: ', dataToken)
+let dataToken = jwt.verify(token, '!@#$%^&*')
+console.log('token yang sudah di kembalikan menjadi bentuk semula: ', dataToken)
 
-let a = 'aku'
-console.log(Boolean(a))
+// let a = 'aku'
+// console.log(Boolean(a))

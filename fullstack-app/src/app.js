@@ -11,6 +11,7 @@ import Product from './pages/product'
 import Login from './pages/login'
 import Register from './pages/register'
 import Verify from './pages/verification'
+import Profile from './pages/profile'
 
 // import actions
 import { keepLogin } from './actions'
@@ -30,6 +31,7 @@ class App extends React.Component {
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
                     <Route path='/verification' component={Verify} />
+                    <Route path='/profile' component={Profile} />
                 </Switch>
             </div>
         )
