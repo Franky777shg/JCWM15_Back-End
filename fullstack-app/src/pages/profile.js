@@ -11,6 +11,7 @@ import { editProfile, upload } from '../actions'
 import avatar from '../assets/no-profile.jpg'
 
 const URL_IMG = 'http://localhost:2000/'
+// http://localhost:2000/images/namafile
 
 class Profile extends Component {
     constructor(props) {

@@ -63,11 +63,7 @@ export const editProfile = (body, id) => {
     return async (dispatch) => {
         try {
             console.log(body, id)
-            const res = await Axios.patch(`http://localhost:2000/profile/edit/${id}`, {
-                gender: body.gender,
-                kota: body.kota,
-                umur: parseInt(body.umur)
-            })
+            const res = await Axios.patch(`http://localhost:2000/profile/edit/${id}`, body)
             // console.log(res.data)
 
             const token = localStorage.getItem('token')
@@ -94,7 +90,16 @@ export const upload = (data, id) => {
             }
 
             const res = await Axios.post(`http://localhost:2000/profile/upload/${id}`, data, option)
-            console.log(res.data)
+            // console.log(res.data)
+
+            const token = localStorage.getItem('token')
+            // console.log(token)
+
+            // get user data from token
+            const res2 = await Axios.post('http://localhost:2000/user/keepLogin', { token })
+            // console.log('hasil dari api', res.data)
+
+            dispatch({ type: 'LOG_IN', payload: res2.data })
         }
         catch (err) {
             console.log(err)

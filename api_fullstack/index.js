@@ -10,6 +10,7 @@ const app = express()
 // apply middleware
 app.use(cors())
 app.use(bodyParser.json())
+app.use(express.static('./public'))
 
 // setup mysql
 // import connection
