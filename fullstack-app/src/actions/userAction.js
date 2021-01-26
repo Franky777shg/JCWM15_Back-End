@@ -62,7 +62,7 @@ export const verification = () => {
 export const editProfile = (body, id) => {
     return async (dispatch) => {
         try {
-            console.log(body, id)
+            // console.log(body, id)
             const res = await Axios.patch(`http://localhost:2000/profile/edit/${id}`, body)
             // console.log(res.data)
 

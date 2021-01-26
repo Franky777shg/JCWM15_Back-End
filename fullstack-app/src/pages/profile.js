@@ -35,11 +35,12 @@ class Profile extends Component {
             umur
         }
         this.props.editProfile(body, this.props.id)
+        this.setState({ edit: false })
     }
 
     handleChoose = (e) => {
         console.log('e target files', e.target.files)
-        this.setState({image: e.target.files[0]})
+        this.setState({ image: e.target.files[0] })
     }
 
     handleUpload = () => {
@@ -49,6 +50,7 @@ class Profile extends Component {
         console.log(data.get('IMG'))
 
         this.props.upload(data, this.props.id)
+        this.setState({ image: null})
     }
 
     render() {
