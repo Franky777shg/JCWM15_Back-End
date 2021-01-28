@@ -11,5 +11,6 @@ router.get('/children', categoryController.cateChildren)
 router.get('/topNode', categoryController.getTopNode)
 router.get('/leavesNode', categoryController.getLeavesNode)
 router.get('/parentCatebyid', categoryController.getCateDetParentById)
+router.patch('/editCate/:id', categoryController.editCate)
 
 module.exports = router

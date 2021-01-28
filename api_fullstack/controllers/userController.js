@@ -203,8 +203,8 @@ module.exports = {
         })
     },
     keepLogin: async (req, res) => {
-        console.log(req.user)
-        console.log('keep login')
+        // console.log(req.user)
+        // console.log('keep login')
 
         try {
             // query to get data from database

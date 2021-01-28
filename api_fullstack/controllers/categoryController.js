@@ -122,7 +122,7 @@ module.exports = {
         }
     },
     getCateDetParentById: async (req, res) => {
-        try{
+        try {
             console.log('req query : ', req.query)
 
             const query = `SELECT c1.id, c1.title, c2.title AS parent FROM category c1
@@ -134,10 +134,23 @@ module.exports = {
 
             res.status(200).send(result)
         }
-        catch(err){
+        catch (err) {
             console.log(err)
             res.status(400).send(err)
         }
     },
-    
+    editCate: async (req, res) => {
+        try {
+            const query = `UPDATE category SET${generateQuery(req.body)} where id = ${db.escape(parseInt(req.params.id))}`
+            // console.log(query)
+
+            const result = await asyncQuery(query)
+
+            res.status(200).send(result)
+        }
+        catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
+    }
 }

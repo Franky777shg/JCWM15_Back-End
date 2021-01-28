@@ -64,7 +64,7 @@ export const editProfile = (body, id) => {
         try {
             // console.log(body, id)
             const res = await Axios.patch(`http://localhost:2000/profile/edit/${id}`, body)
-            // console.log(res.data)
+            console.log(res.data)
 
             const token = localStorage.getItem('token')
             // console.log(token)
@@ -90,7 +90,7 @@ export const upload = (data, id) => {
             }
 
             const res = await Axios.post(`http://localhost:2000/profile/upload/${id}`, data, option)
-            // console.log(res.data)
+            console.log(res.data)
 
             const token = localStorage.getItem('token')
             // console.log(token)

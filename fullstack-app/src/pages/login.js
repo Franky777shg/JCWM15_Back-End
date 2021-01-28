@@ -1,5 +1,4 @@
 import React from 'react'
-import Axios from 'axios'
 import {
     InputGroup,
     FormControl,
@@ -38,7 +37,7 @@ class LoginPage extends React.Component {
 
     render() {
         if (this.props.username) return <Redirect to="/" />
-        const { loginError, visible } = this.state
+        const { visible } = this.state
 
         return (
             <div style={styles.container}>
