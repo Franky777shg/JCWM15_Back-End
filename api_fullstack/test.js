@@ -30,6 +30,14 @@
 
 // let a = 'aku'
 // console.log(Boolean(a))
-const path = require('path')
+// const path = require('path')
 
-console.log(path.join(path.resolve('public'), 'images'))
+// console.log(path.join(path.resolve('public'), 'images'))
+
+let nama_orang = 'Yoona'
+
+const greeting = (data) => {
+    console.log(data)
+}
+
+greeting(nama_orang)

@@ -46,9 +46,9 @@ module.exports = {
     },
     getCateDetParent: async (req, res) => {
         try {
-            const parentQuery = `SELECT c1.id, c1.title, c2.title AS parent FROM category c1
-                                LEFT JOIN category c2
-                                ON c1.parent_id = c2.id`
+            const parentQuery = `SELECT c2.id, c2.title, c2.parent_id, c1.title as parent
+            FROM category c1
+            RIGHT JOIN category c2 ON c1.id = c2.parent_id`
 
             const result = await asyncQuery(parentQuery)
 
