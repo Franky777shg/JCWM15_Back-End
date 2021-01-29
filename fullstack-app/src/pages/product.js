@@ -7,7 +7,7 @@ import {
     Form
 } from 'react-bootstrap'
 
-import { getProduct, addProduct } from '../actions'
+import { getProduct, addProduct, delProduct } from '../actions'
 
 class Product extends React.Component {
     constructor(props) {
@@ -68,7 +68,7 @@ class Product extends React.Component {
                         <td>{item.category}</td>
                         <td>
                             <Button variant="warning">Edit</Button>
-                            <Button variant="danger">Delete</Button>
+                            <Button variant="danger" onClick={() => this.props.delProduct(item.id_products)}>Delete</Button>
                         </td>
                     </tr>
                 )
@@ -111,4 +111,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getProduct, addProduct })(Product);
+export default connect(mapStateToProps, { getProduct, addProduct, delProduct })(Product);

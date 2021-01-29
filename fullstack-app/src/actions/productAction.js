@@ -18,7 +18,20 @@ export const addProduct = (data) => {
         try {
             const res = await Axios.post('http://localhost:2000/product/addProduct', data)
 
-            dispatch({ type: "GET_PRODUCT", payload: res.data})
+            dispatch({ type: "GET_PRODUCT", payload: res.data })
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+}
+
+export const delProduct = (id) => {
+    return async (dispatch) => {
+        try {
+            const res = await Axios.delete(`http://localhost:2000/product/delProduct/${id}`)
+
+            dispatch({ type: "GET_PRODUCT", payload: res.data })
         }
         catch (err) {
             console.log(err)

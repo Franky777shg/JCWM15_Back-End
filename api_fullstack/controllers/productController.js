@@ -46,7 +46,13 @@ module.exports = {
 
             const result = await asyncQuery(delQuery)
 
-            res.status(200).send(result)
+            const getQuery = `select id_products, name, price, stock, title as category from products p
+                              left join category c
+                              on p.category_id = c.id`
+
+            const resultUpdate = await asyncQuery(getQuery)
+
+            res.status(200).send(resultUpdate)
         }
         catch(err){
             console.log(err)
@@ -62,12 +68,11 @@ module.exports = {
 
             const getDataProduct = `select id_products, name, price, stock, title as category from products p
                                     left join category c
-                                    on p.category_id = c.id
-                                    where id_products = ${db.escape(parseInt(req.params.id))}`
+                                    on p.category_id = c.id`
 
             const resultUpdate = await asyncQuery(getDataProduct)
 
-            res.status(200).send(resultUpdate[0])
+            res.status(200).send(resultUpdate)
         }
         catch(err){
             console.log(err)
