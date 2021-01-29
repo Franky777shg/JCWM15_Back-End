@@ -38,3 +38,16 @@ export const delProduct = (id) => {
         }
     }
 }
+
+export const editProduct = (data, id) => {
+    return async (dispatch) => {
+        try {
+            const res = await Axios.patch(`http://localhost:2000/product/editProduct/${id}`, data)
+
+            dispatch({ type: "GET_PRODUCT", payload: res.data })
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+}

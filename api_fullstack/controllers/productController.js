@@ -7,7 +7,7 @@ const db = require('../database')
 module.exports = {
     getAllProduct: (req, res) => {
         // define query sql
-        const queryProduct = `select id_products, name, price, stock, title as category from products p
+        const queryProduct = `select id_products, name, price, stock, id as category_id, title as category from products p
                               left join category c
                               on p.category_id = c.id`
 
@@ -27,9 +27,9 @@ module.exports = {
 
             const result = await asyncQuery(addQuery)
 
-            const getQuery = `select id_products, name, price, stock, title as category from products p
-                              left join category c
-                              on p.category_id = c.id`
+            const getQuery = `select id_products, name, price, stock, id as category_id, title as category from products p
+            left join category c
+            on p.category_id = c.id`
 
             const resultUpdate = await asyncQuery(getQuery)
 
@@ -46,9 +46,9 @@ module.exports = {
 
             const result = await asyncQuery(delQuery)
 
-            const getQuery = `select id_products, name, price, stock, title as category from products p
-                              left join category c
-                              on p.category_id = c.id`
+            const getQuery = `select id_products, name, price, stock, id as category_id, title as category from products p
+            left join category c
+            on p.category_id = c.id`
 
             const resultUpdate = await asyncQuery(getQuery)
 
@@ -66,9 +66,9 @@ module.exports = {
 
             const result = await asyncQuery(editQuery)
 
-            const getDataProduct = `select id_products, name, price, stock, title as category from products p
-                                    left join category c
-                                    on p.category_id = c.id`
+            const getDataProduct = `select id_products, name, price, stock, id as category_id, title as category from products p
+            left join category c
+            on p.category_id = c.id`
 
             const resultUpdate = await asyncQuery(getDataProduct)
 
