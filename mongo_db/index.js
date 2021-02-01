@@ -89,7 +89,32 @@ app.post('/login', (req, res) => {
 })
 
 // get all user
-// get user by id
+app.get('/getUsers', (req, res) => {
+    User.find()
+    .then(result => res.status(400).send(result))
+    .catch(err => res.status(400).send(err))
+})
+
+// get user by id with req.query
+app.get('/getUsersByID', (req, res) => {
+    User.findById(req.query.id)
+    .then(result => res.status(200).send(result))
+    .catch(err => res.status(400).send('Account is doesn\'t exist'))
+})
+
+// delete
+app.delete('/delete/:id', (req, res) => {
+    User.findByIdAndDelete(req.params.id)
+    .then(() => res.status(200).send(`Delete akun untuk user dengan id ${req.params.id} berhasil`))
+    .catch(err => res.status(400).send(err))
+})
+
+// edit
+app.patch('/edit/:id', (req, res) => {
+    User.updateOne({ _id: req.params.id}, req.body)
+    .then(result => res.status(200).send(result))
+    .catch(error => res.status(400).send(error))
+})
 
 const Port = 2000
 app.listen(Port, () => console.log(`Connected to PORT : ${Port}`))
