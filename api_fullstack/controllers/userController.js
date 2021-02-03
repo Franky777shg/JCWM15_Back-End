@@ -1,5 +1,5 @@
 // import module yang dibutuhkan
-const { validationResult, check } = require('express-validator')
+const { validationResult } = require('express-validator')
 const cryptojs = require('crypto-js')
 const handlebars = require('handlebars')
 const fs = require('fs')
